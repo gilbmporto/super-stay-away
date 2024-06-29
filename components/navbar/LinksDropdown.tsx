@@ -23,17 +23,17 @@ import SignOutLink from "./SignOutLink"
 import Image from "next/image"
 
 function LinksDropdown() {
-	const user = useUser()
+	const { isLoaded, isSignedIn, user } = useUser()
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline" className="flex gap-4 max-w-[100px]">
 					<LuAlignLeft className="w-6 h-6" />
-					{user.isLoaded && user.isSignedIn && user.user.hasImage ? (
+					{isLoaded && isSignedIn && user.hasImage ? (
 						<Image
-							src={user.user.imageUrl}
-							alt={user.user.firstName!}
+							src={user.imageUrl}
+							alt={user.firstName!}
 							width={24}
 							height={24}
 							className="object-cover rounded-full"
@@ -47,7 +47,7 @@ function LinksDropdown() {
 				<SignedOut>
 					<DropdownMenuItem>
 						<SignInButton mode="modal">
-							<button className="w-full text-left ">Login</button>
+							<button className="w-full text-left">Login</button>
 						</SignInButton>
 					</DropdownMenuItem>
 					<DropdownMenuItem>

@@ -4,21 +4,21 @@ import DarkMode from "./DarkMode"
 import Logo from "./Logo"
 
 function Navbar() {
-	return (
-		<nav className="border-b">
-			<div
-				className="container flex flex-col sm:flex-row sm:justify-between
+  return (
+    <nav className="border-b">
+      <div
+        className="container flex flex-col sm:flex-row sm:justify-between
         sm:items-center flex-wrap py-8 gap-4"
-			>
-				<Logo />
-				<NavSearch />
-				<div className="flex gap-4 items-center">
-					<DarkMode />
-					<LinksDropdown />
-				</div>
-			</div>
-		</nav>
-	)
+      >
+        <Logo />
+        <NavSearch />
+        <div className="flex gap-4 items-center">
+          <DarkMode />
+          <LinksDropdown />
+        </div>
+      </div>
+    </nav>
+  )
 }
 
 export default Navbar
