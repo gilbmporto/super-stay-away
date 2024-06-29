@@ -3,9 +3,10 @@ import FormContainer from "@/components/form/FormContainer"
 import FormInput from "@/components/form/FormInput"
 import { createProfileAction, getUserProfile } from "@/utils/actions"
 import { currentUser } from "@clerk/nextjs/server"
+import { redirect } from "next/navigation"
 
 async function CreateProfilePage() {
-	const user = await getUserProfile()
+	const user = await currentUser()
 
 	return (
 		<section>
