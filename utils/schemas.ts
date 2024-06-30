@@ -8,7 +8,7 @@ type UserProps = {
 	profileImage?: string
 }
 
-export const profileImageSchema = z.object({
+export const imageSchema = z.object({
 	profileImage: validateFile(),
 })
 
@@ -33,15 +33,33 @@ export function validateWithZodSchema<T>(
 }
 
 function validateFile() {
-	const maxUploadSize = 1024 * 1024 * 5 // 5
+	const maxUploadSize = 1024 * 1024 * 5 // 5 MB
 	const acceptedTypes = ["image/png", "image/jpeg", "image/jpg"]
 
-	return z
-		.instanceof(File)
-		.refine((file) => {
-			return !file || file.size <= maxUploadSize
-		}, "File size must be less than 5 MB")
-		.refine((file) => {
-			return !file || acceptedTypes.includes(file.type)
-		}, "File type must be png, jpeg, or jpg")
+	return z.object({
+		size: z.number().max(maxUploadSize, "File size must be less than 5 MB"),
+		type: z
+			.string()
+			.refine(
+				(type) => acceptedTypes.includes(type),
+				"File type must be png, jpeg, or jpg"
+			),
+		name: z.string(),
+		lastModified: z.number(),
+	})
 }
+
+// function validateFile() {
+// 	const maxUploadSize = 1024 * 1024 * 5
+// 	const acceptedFilesTypes = ["image/"]
+// 	return z
+// 		.instanceof(File)
+// 		.refine((file) => {
+// 			return !file || file.size <= maxUploadSize
+// 		}, "File size must be less than 5 MB")
+// 		.refine((file) => {
+// 			return (
+// 				!file || acceptedFilesTypes.some((type) => file.type.startsWith(type))
+// 			)
+// 		}, "File must be an image")
+// }

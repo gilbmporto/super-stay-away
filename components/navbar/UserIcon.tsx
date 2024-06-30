@@ -13,7 +13,7 @@ async function UserIcon() {
 					alt="Profile Image"
 					width={24}
 					height={24}
-					className="object-cover rounded-full"
+					className="object-cover rounded-full w-6 h-6"
 				/>
 			) : (
 				<LuUser2 className="w-6 h-6 bg-primary rounded-full text-white" />

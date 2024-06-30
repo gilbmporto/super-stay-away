@@ -1,14 +1,11 @@
 "use server"
 
-import {
-	profileImageSchema,
-	profileSchema,
-	validateWithZodSchema,
-} from "./schemas"
+import { imageSchema, profileSchema, validateWithZodSchema } from "./schemas"
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import db from "./db"
+import { uploadImage } from "./supabase"
 
 // helper function to get the current user
 const getAuthUser = async () => {
@@ -119,7 +116,7 @@ export const updateProfileAction = async (
 				firstName: validatedData.firstName,
 				lastName: validatedData.lastName,
 				username: validatedData.username,
-				profileImage: validatedData.profileImage,
+				profileImage: validatedData.profileImage || "",
 			},
 		})
 
@@ -134,9 +131,39 @@ export const updateProfileImageAction = async (
 	prevState: any,
 	formData: FormData
 ): Promise<{ message: string }> => {
-	const image = formData.get("image") as unknown as File
-	const validatedData = validateWithZodSchema(profileImageSchema, { image })
-	console.log(validatedData)
+	const user = await getAuthUser()
 
-	return { message: "Profile image updated successfully" }
+	try {
+		const image = formData.get("image") as File
+
+		if (!image) {
+			throw new Error("No image file found in form data")
+		}
+
+		validateWithZodSchema(imageSchema, {
+			profileImage: {
+				size: image.size,
+				type: image.type,
+				name: image.name,
+				lastModified: image.lastModified,
+			},
+		})
+
+		const fullPath = await uploadImage(image)
+
+		await db.profile.update({
+			where: {
+				clerkId: user.id,
+			},
+			data: {
+				profileImage: fullPath,
+			},
+		})
+
+		revalidatePath("/profile")
+
+		return { message: "Profile image updated successfully" }
+	} catch (error) {
+		return renderError(error)
+	}
 }

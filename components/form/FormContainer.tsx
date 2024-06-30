@@ -1,10 +1,14 @@
 "use client"
 
+// hooks
 import { useEffect } from "react"
 import { useFormState } from "react-dom"
 import { useToast } from "../ui/use-toast"
+
+// server actions
 import { actionFunction } from "@/utils/types"
 
+// state is a message to be sent to user
 const initialState = {
 	message: "",
 }
