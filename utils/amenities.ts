@@ -1,9 +1,5 @@
+// ui icons
 import { IconType } from "react-icons"
-export type Amenity = {
-	name: string
-	icon: IconType
-	selected: boolean
-}
 import {
 	FiCloud,
 	FiTruck,
@@ -26,6 +22,12 @@ import {
 	FiFilm,
 	FiTv,
 } from "react-icons/fi"
+
+export type Amenity = {
+	name: string
+	icon: IconType
+	selected: boolean
+}
 
 export const amenities: Amenity[] = [
 	{ name: "unlimited cloud storage", icon: FiCloud, selected: false },
