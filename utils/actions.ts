@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import db from "./db"
 import { uploadImage } from "./supabase"
+import { PropertyCardProps } from "./types"
 
 // helper function to get the current user
 const getAuthUser = async () => {
@@ -211,4 +212,39 @@ export const createPropertyAction = async (
 	}
 
 	redirect("/")
+}
+
+export const fetchProperties = async ({
+	search = "",
+	category = "",
+}: {
+	search?: string
+	category?: string
+}) => {
+	try {
+		const properties = (await db.property.findMany({
+			where: {
+				category,
+				OR: [
+					{ name: { contains: search, mode: "insensitive" } },
+					{ tagline: { contains: search, mode: "insensitive" } },
+				],
+			},
+			select: {
+				id: true,
+				name: true,
+				tagline: true,
+				country: true,
+				price: true,
+				image: true,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		})) as PropertyCardProps[]
+
+		return properties
+	} catch (error) {
+		renderError(error)
+	}
 }
