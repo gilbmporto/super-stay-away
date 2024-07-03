@@ -9,7 +9,7 @@ type UserProps = {
 }
 
 export const imageSchema = z.object({
-	profileImage: validateFile(),
+	image: validateFile(),
 })
 
 export const profileSchema: ZodSchema<UserProps> = z.object({

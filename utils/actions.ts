@@ -146,7 +146,7 @@ export const updateProfileImageAction = async (
 		}
 
 		validateWithZodSchema(imageSchema, {
-			profileImage: {
+			image: {
 				size: image.size,
 				type: image.type,
 				name: image.name,
@@ -174,7 +174,7 @@ export const updateProfileImageAction = async (
 }
 
 export const createPropertyAction = async (
-	prevState: any,
+	_: any,
 	formData: FormData
 ): Promise<{ message: string }> => {
 	const user = await getAuthUser()
@@ -183,6 +183,9 @@ export const createPropertyAction = async (
 		const rawData = Object.fromEntries(formData.entries())
 		const validatedData = validateWithZodSchema(propertySchema, rawData)
 		const image = formData.get("image") as File
+
+		console.log(validatedData)
+		console.log(image)
 
 		validateWithZodSchema(imageSchema, {
 			image: {
@@ -202,7 +205,8 @@ export const createPropertyAction = async (
 				image: fullPath,
 			},
 		})
-	} catch (error) {
+	} catch (error: any) {
+		console.log(`${error.name}: ${error.message}`)
 		return renderError(error)
 	}
 
