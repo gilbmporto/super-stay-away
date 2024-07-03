@@ -185,9 +185,6 @@ export const createPropertyAction = async (
 		const validatedData = validateWithZodSchema(propertySchema, rawData)
 		const image = formData.get("image") as File
 
-		console.log(validatedData)
-		console.log(image)
-
 		validateWithZodSchema(imageSchema, {
 			image: {
 				size: image.size,
@@ -216,13 +213,16 @@ export const createPropertyAction = async (
 
 export const fetchProperties = async ({
 	search = "",
-	category = "",
+	category,
 }: {
 	search?: string
 	category?: string
 }) => {
 	try {
-		const properties = (await db.property.findMany({
+		// const properties = await db.property.findMany()
+		console.log(category)
+
+		const properties = await db.property.findMany({
 			where: {
 				category,
 				OR: [
@@ -241,7 +241,7 @@ export const fetchProperties = async ({
 			orderBy: {
 				createdAt: "desc",
 			},
-		})) as PropertyCardProps[]
+		})
 
 		return properties
 	} catch (error) {
