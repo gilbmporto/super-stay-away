@@ -1,6 +1,7 @@
-import React from "react"
+// types
+import type { PropertyCardProps } from "@/utils/types"
 
-function PropertyCard() {
+function PropertyCard({ property }: { property: PropertyCardProps }) {
 	return <div>PropertyCard</div>
 }
 
