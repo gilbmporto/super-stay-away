@@ -1,5 +1,4 @@
 // ui icons
-import { IconType } from "react-icons"
 import {
 	FiCloud,
 	FiTruck,
@@ -22,6 +21,9 @@ import {
 	FiFilm,
 	FiTv,
 } from "react-icons/fi"
+
+// icons types
+import { IconType } from "react-icons"
 
 export type Amenity = {
 	name: string
