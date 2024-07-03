@@ -219,9 +219,6 @@ export const fetchProperties = async ({
 	category?: string
 }) => {
 	try {
-		// const properties = await db.property.findMany()
-		console.log(category)
-
 		const properties = await db.property.findMany({
 			where: {
 				category,
