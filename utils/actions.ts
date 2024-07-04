@@ -252,19 +252,8 @@ export const fetchProperty = async (id: string) => {
 			where: {
 				id,
 			},
-			select: {
-				id: true,
-				name: true,
-				tagline: true,
-				country: true,
-				price: true,
-				image: true,
-				description: true,
-				guests: true,
-				bedrooms: true,
-				beds: true,
-				baths: true,
-				amenities: true,
+			include: {
+				profile: true,
 			},
 		})
 
