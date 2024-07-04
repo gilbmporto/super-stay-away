@@ -32,6 +32,7 @@ function PropertyCard({ property }: { property: PropertyCardProps }) {
 						{name.substring(0, 30)}
 					</h3>
 					{/* Property Rating */}
+					<PropertyRating propertyId={propertyId} inPage={false} />
 				</div>
 				<p className="text-sm mt-1 text-muted-foreground">
 					{tagline.substring(0, 50)}
@@ -42,10 +43,12 @@ function PropertyCard({ property }: { property: PropertyCardProps }) {
 						/night
 					</p>
 					{/* Country and Flag */}
+					<CountryFlagAndName countryCode={country} />
 				</div>
 			</Link>
 			<div className="absolute top-5 right-5 z-5">
 				{/* Favorite Toggle Button */}
+				<FavoriteToggleButton propertyId={propertyId} />
 			</div>
 		</article>
 	)
