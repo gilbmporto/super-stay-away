@@ -245,3 +245,31 @@ export const fetchProperties = async ({
 		renderError(error)
 	}
 }
+
+export const fetchProperty = async (id: string) => {
+	try {
+		const property = await db.property.findUnique({
+			where: {
+				id,
+			},
+			select: {
+				id: true,
+				name: true,
+				tagline: true,
+				country: true,
+				price: true,
+				image: true,
+				description: true,
+				guests: true,
+				bedrooms: true,
+				beds: true,
+				baths: true,
+				amenities: true,
+			},
+		})
+
+		return property
+	} catch (error) {
+		renderError(error)
+	}
+}
