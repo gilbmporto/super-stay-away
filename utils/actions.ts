@@ -259,7 +259,7 @@ export const fetchProperty = async (id: string) => {
 
 		return property
 	} catch (error) {
-		renderError(error)
+		return renderError(error)
 	}
 }
 
