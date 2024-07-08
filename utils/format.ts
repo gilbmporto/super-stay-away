@@ -8,3 +8,7 @@ export const formatCurrency = (price: number | null) => {
 		maximumFractionDigits: 0,
 	}).format(value)
 }
+
+export function formatQuantity(quantity: number, noun: string) {
+	return quantity === 1 ? `${quantity} ${noun}` : `${quantity} ${noun}s`
+}
