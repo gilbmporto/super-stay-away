@@ -4,6 +4,8 @@ import { fetchFavorites } from "@/utils/actions"
 import { PropertyCardProps } from "@/utils/types"
 import React from "react"
 
+export const dynamic = "force-dynamic"
+
 async function FavoritesPage() {
 	const favorites = (await fetchFavorites()) as PropertyCardProps[]
 
