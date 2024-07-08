@@ -346,3 +346,19 @@ export const fetchFavorites = async () => {
 		renderError(error)
 	}
 }
+
+export const createReviewAction = async () => {
+	return { message: "Review submitted successfully" }
+}
+
+export const fetchPropertyReviews = async (propertyId: string) => {
+	return { message: "Fetched property reviews successfully" }
+}
+
+export const fetchPropertyReviewsByUser = async (userId: string) => {
+	return { message: "Fetched property reviews by user successfully" }
+}
+
+export const deleteReviewAction = async () => {
+	return { message: "Review deleted successfully" }
+}
