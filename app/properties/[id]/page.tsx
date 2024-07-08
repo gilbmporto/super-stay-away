@@ -8,6 +8,7 @@ import ImageContainer from "@/components/properties/ImageContainer"
 import PropertyDetails from "@/components/properties/PropertyDetails"
 import ShareButton from "@/components/properties/ShareButton"
 import UserInfo from "@/components/properties/UserInfo"
+import SubmitReview from "@/components/reviews/SubmitReview"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { fetchProperty } from "@/utils/actions"
@@ -58,11 +59,12 @@ async function PropertyPage({ params }: { params: { id: string } }) {
 					<Amenities amenities={property.amenities} />
 					<DynamicMap countryCode={property.country} />
 				</div>
-				<div className="lg:col-span-4 flex flex-col items-center">
+				<div className="lg:col-span-4 flex flex-col mt-4 lg:mt-0">
 					{/* Calendar */}
 					<BookingCalendar />
 				</div>
 			</section>
+			<SubmitReview propertyId={property.id} />
 		</section>
 	)
 }
