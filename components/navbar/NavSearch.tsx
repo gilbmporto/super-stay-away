@@ -29,7 +29,7 @@ function NavSearch() {
 			params.delete("search")
 		}
 
-		replace(`${pathname}?${params.toString()}`)
+		replace(`/?${params.toString()}`)
 	}, 400)
 
 	return (
