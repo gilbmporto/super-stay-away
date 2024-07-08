@@ -22,7 +22,7 @@ function BookingCalendar() {
 			defaultMonth={currentDate}
 			selected={range}
 			onSelect={setRange}
-			className="-mt-2"
+			className="-mt-1"
 		/>
 	)
 }
