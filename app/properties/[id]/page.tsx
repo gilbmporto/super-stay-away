@@ -25,6 +25,16 @@ const DynamicMap = dynamic(
 	}
 )
 
+const DynamicBookingWrapper = dynamic(
+	() => import("@/components/booking/BookingWrapper"),
+	{
+		ssr: false,
+		loading: () => (
+			<Skeleton className="h-[200px] md:h-[500px] w-full rounded-md" />
+		),
+	}
+)
+
 async function PropertyPage({ params }: { params: { id: string } }) {
 	const property = await fetchProperty(params.id)
 
@@ -67,7 +77,11 @@ async function PropertyPage({ params }: { params: { id: string } }) {
 				</div>
 				<div className="lg:col-span-4 flex flex-col mt-4 lg:mt-0">
 					{/* Calendar */}
-					<BookingCalendar />
+					<DynamicBookingWrapper
+						propertyId={property.id}
+						price={property.price}
+						bookings={property.bookings}
+					/>
 				</div>
 			</section>
 			{reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
