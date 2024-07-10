@@ -13,6 +13,7 @@ import { redirect } from "next/navigation"
 import db from "./db"
 import { uploadImage } from "./supabase"
 import { PropertyCardProps } from "./types"
+import { calculateTotals } from "./calculateTotals"
 
 // helper function to get the current user
 const getAuthUser = async () => {
@@ -485,4 +486,49 @@ export async function findExistingReview(userId: string, propertyId: string) {
 			propertyId,
 		},
 	})
+}
+
+export const createBookingAction = async (prevState: {
+	propertyId: string
+	checkIn: Date
+	checkOut: Date
+}) => {
+	const user = await getAuthUser()
+	const { propertyId, checkIn, checkOut } = prevState
+
+	const property = await db.property.findUnique({
+		where: {
+			id: propertyId,
+		},
+		select: {
+			price: true,
+		},
+	})
+
+	if (!property) {
+		return { message: "Property not found" }
+	}
+
+	const { orderTotal, totalNights } = calculateTotals({
+		checkIn,
+		checkOut,
+		price: property.price,
+	})
+
+	try {
+		const booking = await db.booking.create({
+			data: {
+				checkIn,
+				checkOut,
+				orderTotal,
+				totalNights,
+				propertyId,
+				profileId: user.id,
+			},
+		})
+	} catch (error) {
+		return renderError(error)
+	}
+
+	redirect("/bookings")
 }
