@@ -9,8 +9,10 @@ type ReviewCardProps = {
 	reviewData: {
 		comment: string
 		rating: number
-		firstName: string
-		profileImage: string
+		name?: string
+		image?: string
+		firstName?: string
+		profileImage?: string
 	}
 	children?: React.ReactNode
 }
@@ -21,12 +23,12 @@ function ReviewCard({ reviewData, children }: ReviewCardProps) {
 			<CardHeader>
 				<div className="flex items-center">
 					<img
-						src={reviewData.profileImage}
+						src={reviewData.image}
 						alt="profile image"
 						className="w-12 h-12 rounded-full object-cover"
 					/>
 					<div className="ml-4">
-						<h3 className="text-sm font-bold">{reviewData.firstName}</h3>
+						<h3 className="text-sm font-bold">{reviewData.name}</h3>
 						<Rating rating={reviewData.rating} />
 					</div>
 				</div>
