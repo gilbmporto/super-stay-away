@@ -11,7 +11,6 @@ async function PropertyRating({
 	propertyId: string
 	inPage: boolean
 }) {
-	// temp values
 	const { rating, count } = await fetchPropertyRating(propertyId)
 
 	if (count === 0) return null
