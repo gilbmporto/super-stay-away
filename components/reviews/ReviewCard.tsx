@@ -23,12 +23,12 @@ function ReviewCard({ reviewData, children }: ReviewCardProps) {
 			<CardHeader>
 				<div className="flex items-center">
 					<img
-						src={reviewData.image}
+						src={reviewData.profileImage}
 						alt="profile image"
 						className="w-12 h-12 rounded-full object-cover"
 					/>
 					<div className="ml-4">
-						<h3 className="text-sm font-bold">{reviewData.name}</h3>
+						<h3 className="text-sm font-bold">{reviewData.firstName}</h3>
 						<Rating rating={reviewData.rating} />
 					</div>
 				</div>

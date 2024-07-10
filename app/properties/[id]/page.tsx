@@ -12,10 +12,10 @@ import PropertyReviews from "@/components/reviews/PropertyReviews"
 import SubmitReview from "@/components/reviews/SubmitReview"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
-import { fetchProperty } from "@/utils/actions"
+import { fetchProperty, findExistingReview } from "@/utils/actions"
 import dynamic from "next/dynamic"
 import { redirect } from "next/navigation"
-import React from "react"
+import { auth } from "@clerk/nextjs/server"
 
 const DynamicMap = dynamic(
 	() => import("@/components/properties/PropertyMap"),
@@ -34,6 +34,11 @@ async function PropertyPage({ params }: { params: { id: string } }) {
 	const details = { baths, bedrooms, beds, guests }
 	const firstName = property.profile.firstName
 	const profileImage = property.profile.profileImage
+
+	const { userId } = auth()
+	const isNotOwner = property.profile.clerkId !== userId
+	const reviewDoesNotExist =
+		userId && isNotOwner && !findExistingReview(property.id, userId)
 
 	return (
 		<section>
@@ -65,7 +70,7 @@ async function PropertyPage({ params }: { params: { id: string } }) {
 					<BookingCalendar />
 				</div>
 			</section>
-			<SubmitReview propertyId={property.id} />
+			{reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
 			<PropertyReviews propertyId={property.id} />
 		</section>
 	)
