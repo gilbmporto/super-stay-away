@@ -22,6 +22,7 @@ import {
 function BookingCalendar() {
 	const currentDate = new Date()
 	const [range, setRange] = useState<DateRange | undefined>(defaultSelected)
+	const { toast } = useToast()
 
 	const bookings = useProperty((state) => state.bookings)
 
@@ -30,7 +31,22 @@ function BookingCalendar() {
 		today: currentDate,
 	})
 
+	const unavailableDates = generateDisabledDates(blockedPeriods)
+
 	useEffect(() => {
+		const selectedRange = generateDateRange(range)
+		selectedRange.some((date) => {
+			if (unavailableDates[date]) {
+				setRange(defaultSelected)
+				toast({
+					title: "Booking conflict",
+					description: "Selected dates are already booked.",
+				})
+				return true
+			}
+			return false
+		})
+
 		useProperty.setState({
 			range,
 		})
