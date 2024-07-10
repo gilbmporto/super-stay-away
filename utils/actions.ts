@@ -1,6 +1,7 @@
 "use server"
 
 import {
+	createReviewSchema,
 	imageSchema,
 	profileSchema,
 	propertySchema,
@@ -347,8 +348,31 @@ export const fetchFavorites = async () => {
 	}
 }
 
-export const createReviewAction = async () => {
-	return { message: "Review submitted successfully" }
+export const createReviewAction = async (
+	prevState: any,
+	formData: FormData
+) => {
+	const user = await getAuthUser()
+
+	try {
+		const rawData = Object.fromEntries(formData.entries())
+		const validatedData = validateWithZodSchema(createReviewSchema, rawData)
+
+		await db.review.create({
+			data: {
+				...validatedData,
+				profileId: user.id,
+			},
+			include: {
+				profile: true,
+			},
+		})
+
+		revalidatePath(`/properties/${validatedData.propertyId}`)
+		return { message: "Review submitted successfully" }
+	} catch (error) {
+		return renderError(error)
+	}
 }
 
 export const fetchPropertyReviews = async (propertyId: string) => {
