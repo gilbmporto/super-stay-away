@@ -84,6 +84,26 @@ export const getUserProfile = async () => {
 	}
 }
 
+export const fetchUserBookings = async () => {
+	try {
+		const user = await getAuthUser()
+
+		const bookings = await db.booking.findMany({
+			where: {
+				profileId: user.id,
+			},
+			select: {
+				checkIn: true,
+				checkOut: true,
+			},
+		})
+
+		return bookings
+	} catch (error) {
+		renderError(error)
+	}
+}
+
 export const fetchProfileImage = async () => {
 	try {
 		const user = await currentUser()
