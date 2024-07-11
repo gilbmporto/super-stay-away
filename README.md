@@ -4,5 +4,5 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 - Basically an AirBNB clone;
 - Developed with latest versions of Next.js, Clerk, Prisma, Tailwind, Shadcn-UI and Zod;
-- You can access the app [here](#)
+- You can access the app [here](https://super-stay-away.vercel.app)
 - Have fun!
