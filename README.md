@@ -1,8 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Super Stay Away
 
-## Super Stay Away
-
-- Basically an AirBNB clone;
+- The best app ever to rent a place to stay away from home;
 - Developed with latest versions of Next.js, Clerk, Prisma, Tailwind, Shadcn-UI and Zod;
-- You can access the app [here](https://super-stay-away.vercel.app)
+- You can access the app [here](https://super-stay-away.vercel.app)!
 - Have fun!
