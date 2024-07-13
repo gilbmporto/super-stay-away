@@ -10,8 +10,16 @@ import { Checkbox } from "../ui/checkbox"
 import { amenities, Amenity } from "@/utils/amenities"
 
 function AmenitiesInput({ defaultValue }: { defaultValue?: Amenity[] }) {
+	const amenitiesWithIcons = defaultValue?.map(({ name, selected }) => {
+		return {
+			name,
+			selected,
+			icon: amenities.find((a) => a.name === name)!.icon,
+		}
+	})
+
 	const [selectedAmenities, setSelectedAmenities] = useState<Amenity[]>(
-		defaultValue ?? amenities
+		amenitiesWithIcons ?? amenities
 	)
 
 	const handleChange = (amenity: Amenity) => {
