@@ -604,3 +604,75 @@ export const deleteBookingAction = async (prevState: { bookingId: string }) => {
 		return renderError(error)
 	}
 }
+
+export const fetchRentals = async () => {
+	const user = await getAuthUser()
+
+	try {
+		const rentals = await db.property.findMany({
+			where: {
+				profileId: user.id,
+			},
+			select: {
+				id: true,
+				name: true,
+				country: true,
+				image: true,
+				price: true,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		})
+
+		const rentalsWithBookingsSums = await Promise.all(
+			rentals.map(async (rental) => {
+				const totalNightsSum = await db.booking.aggregate({
+					where: {
+						propertyId: rental.id,
+					},
+					_sum: {
+						totalNights: true,
+					},
+				})
+
+				const orderTotalSum = await db.booking.aggregate({
+					where: {
+						propertyId: rental.id,
+					},
+					_sum: {
+						orderTotal: true,
+					},
+				})
+
+				return {
+					...rental,
+					totalNightsSum: totalNightsSum._sum.totalNights,
+					orderTotalSum: orderTotalSum._sum.orderTotal,
+				}
+			})
+		)
+
+		return rentalsWithBookingsSums
+	} catch (error) {
+		renderError(error)
+	}
+}
+
+export const deleteRentalAction = async (prevState: { propertyId: string }) => {
+	const { propertyId } = prevState
+	const user = await getAuthUser()
+
+	try {
+		await db.property.delete({
+			where: {
+				id: propertyId,
+				profileId: user.id,
+			},
+		})
+		revalidatePath("/rentals")
+		return { message: "Rental deleted successfully" }
+	} catch (error) {
+		return renderError(error)
+	}
+}
