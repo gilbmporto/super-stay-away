@@ -754,3 +754,34 @@ export const updatePropertyImageAction = async (_: any, formData: FormData) => {
 		return renderError(error)
 	}
 }
+
+export const fetchReservations = async () => {
+	const user = await getAuthUser()
+
+	try {
+		const reservations = await db.booking.findMany({
+			where: {
+				property: {
+					profileId: user.id,
+				},
+			},
+			include: {
+				property: {
+					select: {
+						id: true,
+						name: true,
+						price: true,
+						country: true,
+					},
+				},
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		})
+
+		return reservations
+	} catch (error) {
+		renderError(error)
+	}
+}
