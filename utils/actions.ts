@@ -14,12 +14,19 @@ import db from "./db"
 import { uploadImage } from "./supabase"
 import { PropertyCardProps } from "./types"
 import { calculateTotals } from "./calculateTotals"
+import { formatDate } from "./format"
 
 // helper function to get the current user
 const getAuthUser = async () => {
 	const user = await currentUser()
-	if (!user) throw new Error("You must be logged in to create a profile")
+	if (!user) throw new Error("You must be logged in to access this page")
 	if (!user.privateMetadata.hasProfile) redirect("/profile/create")
+	return user
+}
+
+const getAdminUser = async () => {
+	const user = await getAuthUser()
+	if (user.id !== process.env.ADMIN_USER_ID) redirect("/")
 	return user
 }
 
@@ -784,4 +791,49 @@ export const fetchReservations = async () => {
 	} catch (error) {
 		renderError(error)
 	}
+}
+
+export const fetchStats = async () => {
+	await getAdminUser()
+
+	const usersCount = await db.profile.count()
+	const propertiesCount = await db.property.count()
+	const bookingsCount = await db.booking.count()
+
+	return {
+		usersCount,
+		propertiesCount,
+		bookingsCount,
+	}
+}
+
+export const fetchChartsData = async () => {
+	await getAdminUser()
+	const date = new Date()
+	date.setMonth(date.getMonth() - 6)
+	const sixMonthsAgo = date
+
+	const bookings = await db.booking.findMany({
+		where: {
+			createdAt: {
+				gte: sixMonthsAgo,
+			},
+		},
+		orderBy: {
+			createdAt: "asc",
+		},
+	})
+
+	let bookingsPerMonth = bookings.reduce((acc, booking) => {
+		const date = formatDate(booking.createdAt, true)
+		const existingEntry = acc.find((entry) => entry.date === date)
+		if (existingEntry) {
+			existingEntry.count++
+		} else {
+			acc.push({ date, count: 1 })
+		}
+		return acc
+	}, [] as Array<{ date: string; count: number }>)
+
+	return bookingsPerMonth
 }
