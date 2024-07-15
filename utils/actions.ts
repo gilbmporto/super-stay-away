@@ -542,8 +542,10 @@ export const createBookingAction = async (prevState: {
 		price: property.price,
 	})
 
+	let bookingId: null | string = null
+
 	try {
-		await db.booking.create({
+		const booking = await db.booking.create({
 			data: {
 				checkIn,
 				checkOut,
@@ -553,11 +555,13 @@ export const createBookingAction = async (prevState: {
 				profileId: user.id,
 			},
 		})
+
+		bookingId = booking.id
 	} catch (error) {
 		return renderError(error)
 	}
 
-	redirect("/bookings")
+	redirect(`/checkout?bookingId=${bookingId}`)
 }
 
 export const fetchBookings = async () => {
