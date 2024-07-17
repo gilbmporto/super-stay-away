@@ -1,7 +1,6 @@
 import FavoriteToggleButton from "@/components/card/FavoriteToggleButton"
 import PropertyRating from "@/components/card/PropertyRating"
 import Amenities from "@/components/properties/Amenities"
-import BookingCalendar from "@/components/properties/BookingCalendar"
 import BreadCrumbs from "@/components/properties/BreadCrumbs"
 import Description from "@/components/properties/Description"
 import ImageContainer from "@/components/properties/ImageContainer"
@@ -77,12 +76,17 @@ async function PropertyPage({ params }: { params: { id: string } }) {
 				</div>
 				<div className="lg:col-span-4 flex flex-col mt-4 lg:mt-0">
 					{/* Calendar */}
-					{isNotOwner && (
+					{isNotOwner ? (
 						<DynamicBookingWrapper
 							propertyId={property.id}
 							price={property.price}
 							bookings={property.bookings}
 						/>
+					) : (
+						<p className="text-xl text-center">
+							You are the owner of this property. <br /> No booking calendar is
+							available.
+						</p>
 					)}
 				</div>
 			</section>
