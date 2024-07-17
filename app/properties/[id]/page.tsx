@@ -77,11 +77,13 @@ async function PropertyPage({ params }: { params: { id: string } }) {
 				</div>
 				<div className="lg:col-span-4 flex flex-col mt-4 lg:mt-0">
 					{/* Calendar */}
-					<DynamicBookingWrapper
-						propertyId={property.id}
-						price={property.price}
-						bookings={property.bookings}
-					/>
+					{isNotOwner && (
+						<DynamicBookingWrapper
+							propertyId={property.id}
+							price={property.price}
+							bookings={property.bookings}
+						/>
+					)}
 				</div>
 			</section>
 			{reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
