@@ -577,6 +577,14 @@ export const fetchBookings = async () => {
 	const user = await getAuthUser()
 
 	try {
+		// delete bookings with false payment status
+		await db.booking.deleteMany({
+			where: {
+				profileId: user.id,
+				paymentStatus: false,
+			},
+		})
+
 		const bookings = await db.booking.findMany({
 			where: {
 				profileId: user.id,
